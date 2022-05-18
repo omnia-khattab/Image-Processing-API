@@ -14,22 +14,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validation = exports.resize = void 0;
 const sharp_1 = __importDefault(require("sharp"));
+const fs_1 = require("fs");
+const node_fs_1 = require("node:fs");
 const resize = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.name;
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
     const img_path = `./assets/images/full/${image}.jpg`;
-    const resize_path = `./assets/images/output/resizedImage.jpeg`;
-    yield (0, sharp_1.default)(img_path).resize(width, height).toFile(resize_path);
-    next();
+    const resize_path = `./assets/images/output/${image}_${width}_${height}.jpeg`;
+    //chech if there's an exact image
+    if ((0, node_fs_1.existsSync)(resize_path)) {
+        const img = yield fs_1.promises.readFile(resize_path);
+        res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+        res.end(img, 'binary');
+    }
+    else {
+        yield (0, sharp_1.default)(img_path).resize(width, height).toFile(resize_path);
+        next();
+    }
 });
 exports.resize = resize;
 const validation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.name;
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
-    if (Object.keys(req.params).length === 0) {
-        res.redirect('api/images');
+    if (Object.keys(req.query).length === 0) {
+        res.send('add image properties to resize it');
+        //res.redirect('/api/images');
         return;
     }
     else if (image === undefined || image === ' ') {

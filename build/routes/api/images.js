@@ -15,15 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const fs_1 = require("fs");
 const images = express_1.default.Router();
-const resize_path = `./assets/images/output/resizedImage.jpeg`;
 images.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    /*const body = '<h1>hello world<>h1';
-    res.writeHead(200, {
-        'Content-Length': Buffer.byteLength(body),
-        'Content-Type': 'text/plain',
-    });
-    res.write(body);
-    res.end();*/
+    const image = req.query.name;
+    const width = parseInt(req.query.width);
+    const height = parseInt(req.query.height);
+    const resize_path = `./assets/images/output/${image}_${width}_${height}.jpeg`;
     const img = yield fs_1.promises.readFile(resize_path).catch((error) => {
         throw error;
     });
