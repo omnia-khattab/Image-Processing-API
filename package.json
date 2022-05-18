@@ -4,7 +4,7 @@
   "description": "Udacity Project",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "node build/index.js",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc src/**/*.ts --write",
     "lint/prettier": "npm run lint && npm run prettier",
