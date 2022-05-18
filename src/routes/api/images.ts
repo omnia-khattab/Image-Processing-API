@@ -10,8 +10,8 @@ images.get('/', async (req, res) => {
     
     const resize_path = `./assets/images/output/${image}_${width}_${height}.jpeg`;
 
-    const img = await fsPromises.readFile(resize_path).catch((error) => {
-        throw error;
+    const img = await fsPromises.readFile(resize_path).catch(() => {
+        res.status(500).send('Error occured while processing the image');
     });
     res.writeHead(200, { 'Content-Type': 'image/jpeg' });
     res.end(img, 'binary');

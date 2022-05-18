@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../index"));
 const supertest_1 = __importDefault(require("supertest"));
+const fs_1 = require("fs");
 const request = (0, supertest_1.default)(index_1.default);
 describe('End Point Test Response', () => {
     it('Get The Home End Point', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,9 +28,21 @@ describe('End Point Test Response', () => {
         expect(response.status).toBe(200);
     }));
 });
-describe('End Point Test Response', () => {
-    it('Get The Api/Images>name&widthheightEnd Point', () => __awaiter(void 0, void 0, void 0, function* () {
+describe('End Point Test For Image ', () => {
+    it('Get The Api/Images? name & width & height End Point', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/api/images?name=image2&width=400&height=200');
         expect(response.status).toBe(200);
+    }));
+    it('Resized Image should be exist', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield request.get('/api/images?name=image2&width=400&height=200').then(() => {
+            fs_1.promises.stat('../../assets/images/output/image2_400_200.jpeg')
+                .then((fileStat) => expect(fileStat).not.toBeNull());
+        });
+    }));
+    it('check if image exist in full directory', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield request.get('/api/images?name=image2&width=400&height=200').then(() => {
+            fs_1.promises.stat('../../assets/images/full/image2.jpg')
+                .then((fileStat) => expect(fileStat).not.toBeNull());
+        });
     }));
 });

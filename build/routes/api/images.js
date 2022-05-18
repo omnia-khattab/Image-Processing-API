@@ -20,8 +20,8 @@ images.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
     const resize_path = `./assets/images/output/${image}_${width}_${height}.jpeg`;
-    const img = yield fs_1.promises.readFile(resize_path).catch((error) => {
-        throw error;
+    const img = yield fs_1.promises.readFile(resize_path).catch(() => {
+        res.status(500).send('Error occured while processing the image');
     });
     res.writeHead(200, { 'Content-Type': 'image/jpeg' });
     res.end(img, 'binary');

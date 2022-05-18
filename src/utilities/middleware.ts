@@ -18,7 +18,9 @@ const resize = async (
 
         //chech if there's an exact image with the same properties
         if(existsSync(resize_path)){
-            const img = await fsPromises.readFile(resize_path)
+            const img = await fsPromises.readFile(resize_path).catch(() => {
+                res.status(500).send('Error occured while processing the image');
+            });
             res.writeHead(200, { 'Content-Type': 'image/jpeg' });
             res.end(img, 'binary');
         }
@@ -26,9 +28,6 @@ const resize = async (
             await sharp(img_path).resize(width, height).toFile(resize_path);
             next();
         }
-        
-        
-    
 };
 
 const validation = async (
@@ -41,16 +40,15 @@ const validation = async (
     const height = parseInt(req.query.height as string);
     
     if (Object.keys(req.query).length === 0) {
-        res.send('add image properties to resize it');
-        //res.redirect('/api/images');
+        res.send('');
         return;
     }
     else if (image === undefined || image === ' ') {
             res.status(404).send('Image resource not find');
-        } else if (width < 10) {
-            res.status(400).send("width shouldn't be less than 10");
-        } else if (height < 10) {
-            res.status(400).send("height shouldn't be less than 10");
+        } else if (width < 10 || isNaN(width)) {
+            res.status(400).send("width must be exist and more than 10");
+        } else if (height < 10 || isNaN(height)) {
+            res.status(400).send("height must be exist and more than 10");
         } else {
             next();
         }
