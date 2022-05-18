@@ -34,14 +34,20 @@ describe('End Point Test For Image ', () => {
         expect(response.status).toBe(200);
     }));
     it('Resized Image should be exist', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield request.get('/api/images?name=image2&width=400&height=200').then(() => {
-            fs_1.promises.stat('../../assets/images/output/image2_400_200.jpeg')
+        yield request
+            .get('/api/images?name=image2&width=400&height=200')
+            .then(() => {
+            fs_1.promises
+                .stat('../../assets/images/output/image2_400_200.jpeg')
                 .then((fileStat) => expect(fileStat).not.toBeNull());
         });
     }));
-    it('check if image exist in full directory', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield request.get('/api/images?name=image2&width=400&height=200').then(() => {
-            fs_1.promises.stat('../../assets/images/full/image2.jpg')
+    it('the desired image to resize must be exist in full directory', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield request
+            .get('/api/images?name=image2&width=400&height=200')
+            .then(() => {
+            fs_1.promises
+                .stat('../../assets/images/full/image2.jpg')
                 .then((fileStat) => expect(fileStat).not.toBeNull());
         });
     }));

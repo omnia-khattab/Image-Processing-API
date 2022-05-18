@@ -12,5 +12,3 @@ routes.get('/', (req: express.Request, res: express.Response) => {
     res.send('HEllo From Main Route');
 });
 export default routes;
-
-

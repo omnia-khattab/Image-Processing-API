@@ -48,10 +48,10 @@ const validation = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         res.status(404).send('Image resource not find');
     }
     else if (width < 10 || isNaN(width)) {
-        res.status(400).send("width must be exist and more than 10");
+        res.status(400).send('width must be exist and more than 10');
     }
     else if (height < 10 || isNaN(height)) {
-        res.status(400).send("height must be exist and more than 10");
+        res.status(400).send('height must be exist and more than 10');
     }
     else {
         next();
