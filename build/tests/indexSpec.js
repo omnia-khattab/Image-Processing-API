@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../index"));
 const supertest_1 = __importDefault(require("supertest"));
 const fs_1 = require("fs");
+const path_1 = __importDefault(require("path"));
 const request = (0, supertest_1.default)(index_1.default);
 describe('End Point Test Response', () => {
     it('Get The Home End Point', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -38,7 +39,7 @@ describe('End Point Test For Image ', () => {
             .get('/api/images?name=image2&width=400&height=200')
             .then(() => {
             fs_1.promises
-                .stat('../../assets/images/output/image2_400_200.jpeg')
+                .stat(path_1.default.resolve(__dirname, '../../assets/images/output/image2_400_200.jpeg'))
                 .then((fileStat) => expect(fileStat).not.toBeNull());
         });
     }));
@@ -47,7 +48,7 @@ describe('End Point Test For Image ', () => {
             .get('/api/images?name=image2&width=400&height=200')
             .then(() => {
             fs_1.promises
-                .stat('../../assets/images/full/image2.jpg')
+                .stat(path_1.default.resolve(__dirname, '../../assets/images/output/image2_400_200.jpeg'))
                 .then((fileStat) => expect(fileStat).not.toBeNull());
         });
     }));

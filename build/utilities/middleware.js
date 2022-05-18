@@ -16,6 +16,7 @@ exports.validation = exports.resize = void 0;
 const sharp_1 = __importDefault(require("sharp"));
 const fs_1 = require("fs");
 const node_fs_1 = require("node:fs");
+const path_1 = __importDefault(require("path"));
 const resize = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.name;
     const width = parseInt(req.query.width);
@@ -40,12 +41,18 @@ const validation = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     const image = req.query.name;
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
+    //checking if the image exist in the folder
+    const dir_path = path_1.default.resolve(__dirname, `../../assets/images/full/${image}.jpg`);
+    const imageNameExist = yield fs_1.promises.stat(dir_path).catch(() => {
+        //res.status(404).send('Image resource not found');
+        return;
+    });
     if (Object.keys(req.query).length === 0) {
         res.send('');
         return;
     }
-    else if (image === undefined || image === ' ') {
-        res.status(404).send('Image resource not find');
+    else if (image === undefined || image === ' ' || !imageNameExist) {
+        res.status(404).send('Image resource not found');
     }
     else if (width < 10 || isNaN(width)) {
         res.status(400).send('width must be exist and more than 10');
@@ -56,5 +63,10 @@ const validation = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     else {
         next();
     }
+    /*console.log(imageNameExist);
+
+    if(!imageNameExist){
+        return;
+    }*/
 });
 exports.validation = validation;

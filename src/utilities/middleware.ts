@@ -2,6 +2,9 @@ import express from 'express';
 import sharp from 'sharp';
 import { promises as fsPromises } from 'fs';
 import { existsSync } from 'node:fs';
+import path from 'path';
+import { Stats } from 'fs';
+
 
 const resize = async (
     req: express.Request,
@@ -37,11 +40,18 @@ const validation = async (
     const width = parseInt(req.query.width as string);
     const height = parseInt(req.query.height as string);
 
+    //checking if the image exist in the folder
+    const dir_path=path.resolve(__dirname,`../../assets/images/full/${image}.jpg`);
+    const imageNameExist=await fsPromises.stat(dir_path).catch(()=>{
+        //res.status(404).send('Image resource not found');
+        return ;
+    });
+
     if (Object.keys(req.query).length === 0) {
         res.send('');
         return;
-    } else if (image === undefined || image === ' ') {
-        res.status(404).send('Image resource not find');
+    } else if (image === undefined || image === ' ' || !imageNameExist) {
+        res.status(404).send('Image resource not found');
     } else if (width < 10 || isNaN(width)) {
         res.status(400).send('width must be exist and more than 10');
     } else if (height < 10 || isNaN(height)) {
@@ -49,6 +59,12 @@ const validation = async (
     } else {
         next();
     }
+    
+    /*console.log(imageNameExist);
+
+    if(!imageNameExist){
+        return;
+    }*/
 };
 
 export { resize, validation };
