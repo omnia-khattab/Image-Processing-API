@@ -3,8 +3,10 @@ import supertest from 'supertest';
 import { promises as fsPromises } from 'fs';
 import { Stats } from 'fs';
 import path from 'path';
-
+import { resize } from '../utilities/middleware';
 const request = supertest(app);
+
+
 describe('End Point Test Response', (): void => {
     it('Get The Home End Point', async () => {
         const response = await request.get('/');
@@ -32,18 +34,21 @@ describe('End Point Test For Image ', (): void => {
             .get('/api/images?name=image2&width=400&height=200')
             .then(() => {
                 fsPromises
-                    .stat(path.resolve(__dirname,'../../assets/images/output/image2_400_200.jpeg'))
+                    .stat(
+                        path.resolve(
+                            __dirname,
+                            './../../assets/images/output/image2_400_200.jpeg'
+                        )
+                    )
                     .then((fileStat: Stats) => expect(fileStat).not.toBeNull());
             });
     });
+});
 
-    it('the desired image to resize must be exist in full directory', async () => {
-        await request
-            .get('/api/images?name=image2&width=400&height=200')
-            .then(() => {
-                fsPromises
-                    .stat(path.resolve(__dirname,'../../assets/images/output/image2_400_200.jpeg'))
-                    .then((fileStat: Stats) => expect(fileStat).not.toBeNull());
-            });
+describe('Test Image Properties', (): void => {
+    it('test file name , width and height', () => {
+        expect(() => {
+            resize('image2', 100, 100);
+        }).not.toThrow();
     });
 });

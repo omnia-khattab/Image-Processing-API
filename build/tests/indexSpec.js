@@ -16,6 +16,7 @@ const index_1 = __importDefault(require("../index"));
 const supertest_1 = __importDefault(require("supertest"));
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
+const middleware_1 = require("../utilities/middleware");
 const request = (0, supertest_1.default)(index_1.default);
 describe('End Point Test Response', () => {
     it('Get The Home End Point', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -39,17 +40,15 @@ describe('End Point Test For Image ', () => {
             .get('/api/images?name=image2&width=400&height=200')
             .then(() => {
             fs_1.promises
-                .stat(path_1.default.resolve(__dirname, '../../assets/images/output/image2_400_200.jpeg'))
+                .stat(path_1.default.resolve(__dirname, './../../assets/images/output/image2_400_200.jpeg'))
                 .then((fileStat) => expect(fileStat).not.toBeNull());
         });
     }));
-    it('the desired image to resize must be exist in full directory', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield request
-            .get('/api/images?name=image2&width=400&height=200')
-            .then(() => {
-            fs_1.promises
-                .stat(path_1.default.resolve(__dirname, '../../assets/images/output/image2_400_200.jpeg'))
-                .then((fileStat) => expect(fileStat).not.toBeNull());
-        });
-    }));
+});
+describe('Test Image Properties', () => {
+    it('test file name , width and height', () => {
+        expect(() => {
+            (0, middleware_1.resize)('image2', 100, 100);
+        }).not.toThrow();
+    });
 });
