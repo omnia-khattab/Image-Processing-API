@@ -47,8 +47,8 @@ describe('End Point Test For Image ', () => {
 });
 describe('Test Image Properties', () => {
     it('test file name , width and height', () => {
-        expect(() => {
-            (0, middleware_1.resize)('image2', 100, 100);
-        }).not.toThrow();
+        expect(() => __awaiter(void 0, void 0, void 0, function* () {
+            yield (0, middleware_1.resize)('image2', 100, 100);
+        })).not.toThrow();
     });
 });

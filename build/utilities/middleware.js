@@ -58,7 +58,7 @@ const resizeMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
     else {
         try {
-            resize(image, width, height);
+            yield resize(image, width, height);
             next();
         }
         catch (error) {
@@ -67,10 +67,10 @@ const resizeMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.resizeMiddleware = resizeMiddleware;
-const resize = (image, width, height) => {
+const resize = (image, width, height) => __awaiter(void 0, void 0, void 0, function* () {
     const img_path = path_1.default.resolve(__dirname, `./../../assets/images/full/${image}.jpg`);
     const resize_path = path_1.default.resolve(__dirname, `./../../assets/images/output/${image}_${width}_${height}.jpeg`);
-    (0, sharp_1.default)(img_path)
+    yield (0, sharp_1.default)(img_path)
         .resize(width, height)
         .toFile(resize_path)
         .then((res) => {
@@ -81,7 +81,7 @@ const resize = (image, width, height) => {
         console.error("Error processing files, let's clean it up", err);
         (0, assert_1.rejects)(err);
     });
-};
+});
 exports.resize = resize;
 const validation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.name;

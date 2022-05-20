@@ -33,7 +33,7 @@ const resizeMiddleware = async (
         return;
     } else {
         try {
-            resize(image, width, height);
+            await resize(image, width, height);
             next();
         } catch (error) {
             res.status(500).send(error + 'From try & catch in Middleware');
@@ -41,7 +41,7 @@ const resizeMiddleware = async (
     }
 };
 
-const resize = (image: string, width: number, height: number):void => {
+const resize = async(image: string, width: number, height: number):Promise<void> => {
     const img_path: string = path.resolve(
         __dirname,
         `./../../assets/images/full/${image}.jpg`
@@ -51,7 +51,7 @@ const resize = (image: string, width: number, height: number):void => {
         `./../../assets/images/output/${image}_${width}_${height}.jpeg`
     );
 
-    sharp(img_path)
+    await sharp(img_path)
         .resize(width, height)
         .toFile(resize_path)
         .then((res) => {

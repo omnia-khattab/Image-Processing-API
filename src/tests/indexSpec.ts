@@ -47,8 +47,8 @@ describe('End Point Test For Image ', (): void => {
 
 describe('Test Image Properties', (): void => {
     it('test file name , width and height', () => {
-        expect(() => {
-            resize('image2', 100, 100);
+        expect(async () => {
+            await resize('image2', 100, 100);
         }).not.toThrow();
     });
 });
