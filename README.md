@@ -16,12 +16,13 @@
   - http://localhost:3000/
   - http://localhost:3000/api/images
   - http://localhost:3000/api/images?name=image4&width=400&height=400
+  - http://localhost:3000/api/images?name=image4&width=10&height=10
   
 ## Project Failed EndPoints
   - http://localhost:3000/api/images?name&width=400&height=400
   - http://localhost:3000/api/images?name=image4&width=0&height=400
   - http://localhost:3000/api/images?name=image4&width=400&height=0
-  - http://localhost:3000/api/images?name=image4&width=10&height=10
+  - http://localhost:3000/api/images?name=image4&width=9&height=9
   - http://localhost:3000/api/images?name=image4&width=10
 
 ## Project Functionality
