@@ -1,18 +1,29 @@
 # Image-Processing-API
 
 ## The needed scripts
-  - ### EsLint and prettier
-    -  npm run lint && npm run prettier
-  - ### Test
-    - npm run build && npm run jasmine
+  - ### EsLint 
+    -  npm run lint
+  - ### prettier
+    -  npm run prettier
+  - ### build
+    -  npm run build
+  - ### jasmin
+    - npm run jasmine
   - ### start
-    - node build/index.js
+    - npm run start
     
 ## Project EndPoints
   - http://localhost:3000/
   - http://localhost:3000/api/images
   - http://localhost:3000/api/images?name=image4&width=400&height=400
   
+## Project Failed EndPoints
+  - http://localhost:3000/api/images?name&width=400&height=400
+  - http://localhost:3000/api/images?name=image4&width=0&height=400
+  - http://localhost:3000/api/images?name=image4&width=400&height=0
+  - http://localhost:3000/api/images?name=image4&width=10&height=10
+  - http://localhost:3000/api/images?name=image4&width=10
+
 ## Project Functionality
   I have created two middleware function
   - ### validation
